@@ -1,12 +1,45 @@
-# Deskflow Guard
+# Deskflow Guard — macOS 启动与断线管理
 
 一个轻量的 macOS 小应用，让 Deskflow **登录时打开但保持断开，掉线后停止重试**。
 
-A lightweight macOS companion for Deskflow: launch disconnected at login and stop retrying after connection failure.
+A native macOS utility for Deskflow keyboard and mouse sharing: start disconnected at login, stop automatic reconnect loops and log spam after connection failure, and manage the background guard from a GUI.
 
 ## 为什么做这个
 
 希望开机后 Deskflow 随时可用，但不希望它自动连接；离开 Wi-Fi 或服务器关机后，也不希望连接重试和日志一直刷。Deskflow Guard 用一个原生管理窗口，把这些行为集中到几个开关里。
+
+## 适合哪些需求场景
+
+| 场景 | 你遇到的问题 | Deskflow Guard 的处理 |
+| --- | --- | --- |
+| MacBook 带出门、换 Wi-Fi | 办公桌上的键鼠共享服务器不可达，客户端持续重连、刷日志 | 检测到掉线或最终连接失败后停止客户端，保留窗口；回到网络后手动连接 |
+| Mac 开机比服务器早 | 希望软件自动打开，但另一台电脑还没开机，不想立即连接 | 登录时打开 Deskflow，保持断开，等服务器准备好再点“连接” |
+| 服务器关机或网络断开 | 停止使用后客户端还一直尝试连接 | 自动结束重试，回到可手动连接的状态 |
+| 只在工作时共享键盘鼠标 | 希望保留开机可用的便利，同时自己决定什么时候连接 | 把“打开软件”和“开始连接”分开；守护和登录自启动都有独立控制 |
+| 家里、公司使用不同服务器 | 配置多个地址后，第一个不可达，但第二个仍可能可用 | 允许继续尝试下一个地址，全部失败后才停止；无需删掉备用地址 |
+| 不想每次手动管理后台脚本 | 不清楚守护是否在运行，也不想用终端开关启动项 | 用原生窗口查看状态、启动/停止守护、管理登录启动和查看日志 |
+
+它适合**希望手动重连**的人。如果你需要网络恢复后无人值守自动重连，Deskflow 本身的重试行为更符合这个目标，建议停用本守护。
+
+## 你可能正在搜索这些问题
+
+- Deskflow Mac 开机自启动，但不要自动连接 / **Deskflow start at login without auto-connect**
+- Deskflow 断线后停止自动重连 / **Deskflow disable auto reconnect on macOS**
+- Deskflow 没有 Wi-Fi、服务器关机后一直刷日志 / **Deskflow reconnect loop / log spam**
+- Deskflow `failed to connect to server`、`Host is down` 或 `Timed out` 不断重复
+- Mac 上如何管理 Deskflow 后台守护和登录启动项 / **Deskflow LaunchAgent GUI manager**
+
+这些关键词对应的是客户端启动与重试管理。它不解决服务器地址错误、网络不通、权限缺失或键鼠共享本身的兼容问题。
+
+## Use cases (English)
+
+- **Laptop leaves the office Wi-Fi:** stop retrying an unreachable keyboard/mouse sharing server; reconnect manually when needed.
+- **Mac starts before the server:** open Deskflow at login without immediately starting a connection.
+- **Server shuts down:** stop the reconnect loop instead of continuously logging connection failures.
+- **Several server addresses:** keep trying the next address; stop only after all addresses fail.
+- **Prefer buttons to terminal commands:** manage the local LaunchAgent with a native SwiftUI window.
+
+Designed for manual reconnection. Keep the guard disabled if you need unattended automatic reconnection after temporary outages. Requires Deskflow file logging; see the limitations below.
 
 ## 功能
 
